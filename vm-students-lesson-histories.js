@@ -1,23 +1,27 @@
 // ==UserScript==
-// @name         Students Lesson Histories (Tampermonkey Optimized)
-// @namespace    Violentmonkey Scripts
-// @match        https://my.learnquraan.co.uk/employees/teacher/student-list
-// @grant        none
-// @version      3.5
-// @author       Hafiz Saleem Ullah
-// @description  Sticky header/column, Poppins font, and 100vw/vh HTML export. Optimized for Tampermonkey.
-// @require      https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js
-// @require      https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js
-// ==UserScript==
+// @name        Students Lesson Histories
+// @namespace   Violentmonkey Scripts
+// @match       https://my.learnquraan.co.uk/employees/teacher/student-list
+// @grant       none
+// @version     3.4
+// @author      Hafiz Saleem Ullah
+// @description Sticky header/column and 100vw/vh viewport for HTML export.
+// ==/UserScript==
 
 (function() {
     'use strict';
 
-    // Inject Poppins Font
     const fontLink = document.createElement('link');
     fontLink.href = 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap';
     fontLink.rel = 'stylesheet';
     document.head.appendChild(fontLink);
+
+    const lib1 = document.createElement('script');
+    lib1.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+    const lib2 = document.createElement('script');
+    lib2.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+    document.head.appendChild(lib1);
+    document.head.appendChild(lib2);
 
     function getTeacherName() {
         const nameSpan = document.querySelector('footer.main-footer .fw-bold.fs-8.text-uppercase');
@@ -68,30 +72,40 @@
         XLSX.utils.book_append_sheet(workbook, worksheet, "Report");
         XLSX.writeFile(workbook, `${fileName}.xlsx`);
 
-        // 2. HTML (Full Viewport + Sticky)
+        // 2. HTML (Sticky Header + Sticky Column + Full Screen Viewport)
         const htmlContent = `<!DOCTYPE html><html><head><title>${fileName}</title>
             <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
             <style>
                 * { box-sizing: border-box; }
                 body, html { margin: 0; padding: 0; width: 100vw; height: 100vh; overflow: hidden; font-family: 'Poppins', sans-serif; }
+
                 .main-container { display: flex; flex-direction: column; width: 100%; height: 100%; padding: 15px; background: #f0f2f5; }
                 h2 { margin: 0 0 10px 0; color: #1e4db7; font-size: 1.2rem; }
+
                 .table-viewport { flex-grow: 1; overflow: auto; background: white; border: 1px solid #ddd; border-radius: 4px; position: relative; }
+
                 table { border-collapse: separate; border-spacing: 0; width: max-content; }
-                thead th { position: sticky; top: 0; background: #1e4db7 !important; color: white; z-index: 25; padding: 12px; font-weight: 600; font-size: 13px; text-align: left; border-bottom: 2px solid #000; }
+
+                /* Sticky Top Header */
+                thead th { position: sticky; top: 0; background: #1e4db7 !important; color: white; z-index: 20; padding: 12px; font-weight: 600; font-size: 13px; text-align: left; border-bottom: 2px solid #000; }
+
+                /* Sticky First Column */
                 td:first-child { position: sticky; left: 0; z-index: 10; background: #f8faff !important; font-weight: 700; color: #1e4db7; border-right: 2px solid #1e4db7; }
-                thead th:first-child { position: sticky; left: 0; top: 0; z-index: 40; background: #1e4db7 !important; }
+
+                /* Intersection (Top Left Cell) */
+                thead th:first-child { position: sticky; left: 0; top: 0; z-index: 30; background: #1e4db7 !important; }
+
                 th, td { border: 1px solid #eee; padding: 12px; min-width: 150px; }
                 tr:nth-child(even) td { background: #fafafa; }
                 .highlight-cell { background: #f0f7ff !important; font-weight: 700; color: #1e4db7; }
             </style></head>
             <body>
                 <div class="main-container">
-                    <h2>${teacherName} - Progress Report</h2>
+                    <h2>${teacherName} - Student Progress Report</h2>
                     <div class="table-viewport">${document.getElementById(tableId).outerHTML}</div>
                 </div>
             </body></html>`;
-        
+
         const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
         const htmlLink = document.createElement('a');
         htmlLink.href = URL.createObjectURL(htmlBlob);
@@ -102,11 +116,11 @@
         downloadBtn.style.visibility = 'hidden';
         html2canvas(container, {
             scale: 2,
-            windowWidth: 2300,
+            windowWidth: 2200,
             useCORS: true,
             onclone: (clonedDoc) => {
                 const clonedContainer = clonedDoc.getElementById('dashboard-container');
-                clonedContainer.style.width = "2200px";
+                clonedContainer.style.width = "2100px";
                 clonedContainer.style.fontFamily = "'Poppins', sans-serif";
             }
         }).then(canvas => {
@@ -122,11 +136,11 @@
         const dates = getFiveMonthRange();
         const teacherName = getTeacherName();
         const studentCards = document.querySelectorAll('.box.bg-secondary-light');
-        
+
         const container = document.createElement('div');
         container.id = "dashboard-container";
         container.style.cssText = `font-family: 'Poppins', sans-serif; background:white; border:2px solid #1e4db7; border-radius:8px; margin:20px; padding:20px; box-shadow:0 4px 15px rgba(0,0,0,0.1);`;
-        
+
         container.innerHTML = `
             <div id="header-row" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:2px solid #eee; padding-bottom:10px;">
                 <h3 style="color:#1e4db7; font-weight:700; margin:0; text-transform:uppercase;">${teacherName}</h3>
@@ -137,15 +151,15 @@
                     <thead>
                         <tr>
                             ${['Student', 'Date', 'Course', 'Juzz', 'Page', 'Lesson Detail', 'Additional', 'Section', 'Page', 'Add. Detail'].map((h, i) => `
-                                <th style="min-width:140px; padding:12px; background:#1e4db7; color:white; position:sticky; top:0; z-index:${i===0?40:20}; border-bottom:2px solid #000; ${i===0?'left:0;':''}">${h}</th>`).join('')}
+                                <th style="min-width:140px; padding:12px; background:#1e4db7; color:white; position:sticky; top:0; z-index:${i===0?30:20}; border-bottom:2px solid #000; ${i===0?'left:0;':''}">${h}</th>`).join('')}
                         </tr>
                     </thead>
                     <tbody id="master-history-body">
-                        <tr><td colspan="10" style="text-align:center; padding:30px;">Loading student records...</td></tr>
+                        <tr><td colspan="10" style="text-align:center; padding:30px;">Processing Student Records...</td></tr>
                     </tbody>
                 </table>
             </div>`;
-        
+
         document.querySelector('.content-header').prepend(container);
 
         const tasks = Array.from(studentCards).map(card => {
