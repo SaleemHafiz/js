@@ -1,14 +1,14 @@
 // ==UserScript==
-// @name         Students Lesson Histories (Tampermonkey Optimized)
-// @namespace    Violentmonkey Scripts
+// @name         Students Lesson Histories
+// @namespace    https://github.com/SaleemHafiz
+// @version      3.5
+// @description  Sticky header/column, Poppins font, and 100vw/vh HTML export.
+// @author       Hafiz Saleem Ullah
 // @match        https://my.learnquraan.co.uk/employees/teacher/student-list
 // @grant        none
-// @version      3.5
-// @author       Hafiz Saleem Ullah
-// @description  Sticky header/column, Poppins font, and 100vw/vh HTML export. Optimized for Tampermonkey.
 // @require      https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js
 // @require      https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js
-// ==UserScript==
+// ==/UserScript==
 
 (function() {
     'use strict';
