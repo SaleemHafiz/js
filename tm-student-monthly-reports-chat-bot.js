@@ -188,7 +188,7 @@
                         <i class="fa-solid fa-paper-plane" style="font-size: 12px;"></i>
                     </button>
                 </div>
-                <button id="final-btn"><i class="fa-solid fa-copy"></i> <span>Copy Management Report</span></button>
+                <button id="final-btn"><i class="fa-solid fa-copy"></i> <span>Copy Report Prompt</span></button>
             </div>
         `;
         document.body.appendChild(sidebar);
@@ -493,11 +493,17 @@ ${currentData}
 
 Focus on whether they are improving, steady, or declining based on history vs current, considering both qualitative notes and quantitative performance metrics.`;
 
-            navigator.clipboard.writeText(prompt);
-            btn.innerHTML = `<i class="fa-solid fa-check"></i> <span>Report Prompt Copied</span>`;
-            btn.style.background = SUCCESS_COLOR;
-        };
-    }
+        navigator.clipboard.writeText(prompt);
+        btn.innerHTML = `<i class="fa-solid fa-check"></i> <span>Report Prompt Copied</span>`;
+        btn.style.background = SUCCESS_COLOR;
+
+        // Reset button after 3 seconds
+        setTimeout(() => {
+            btn.innerHTML = `<i class="fa-solid fa-copy"></i> <span>Copy Report Prompt</span>`;
+            btn.style.background = PRIMARY_COLOR;
+        }, 3000);
+    };
+}
 
 if (document.readyState === 'complete') initSidebar();
 else window.addEventListener('load', initSidebar);
