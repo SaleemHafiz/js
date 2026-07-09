@@ -119,7 +119,8 @@ ${answers.join("\n")}
                     const body = editor.document.getBody();
                     const text = body.getText();
                     if (!text.endsWith(".")) {
-                        body.setHtml(text + ".");
+                        const html = body.getHtml();
+                        body.setHtml(html + ".");
                     }
                 }
             } catch (err) {
