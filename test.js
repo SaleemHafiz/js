@@ -4,14 +4,14 @@
 // @version      1.0
 // @description  Test
 // @author       You
-// @match        https://qb.vu.edu.pk/*
+// @match        *://*.edu.pk/*
 // @grant        GM_addStyle
 // @run-at       document-start
 // ==/UserScript==
 
 (function () {
     'use strict';
-    const API_KEY = "AQ.Ab8RN6JaeFNdb0yKRmursmTVan8LqKZ3eZkZPzr6if6IKOPlRQ";
+    const API_KEY = "AQ.Ab8RN6IZ1pSF6_IL6nm4A9txfzaOymlHyz0_C1nvCu1Z5zky2A";
     const cache = new Map();
     function start() {
         if (typeof CKEDITOR === "undefined") {
@@ -120,7 +120,12 @@ ${answers.join("\n")}
                     const text = body.getText();
                     if (!text.endsWith(".")) {
                         const html = body.getHtml();
-                        body.setHtml(html + ".");
+                        const lastClose = html.lastIndexOf('</');
+                        if (lastClose !== -1) {
+                            body.setHtml(html.slice(0, lastClose) + '.' + html.slice(lastClose));
+                        } else {
+                            body.setHtml(html + '.');
+                        }
                     }
                 }
             } catch (err) {
