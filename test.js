@@ -11,7 +11,7 @@
 
 (function () {
     'use strict';
-    const chabi = "AQ.Ab8RN6Ll0fS_CHC1nd7Cm40dDyb8V0UTMPBuGAtnhRXmMrNee";
+    const chabi = "AQ.Ab8RN6IbF4bQ-bbwwcCmjQ8xkua-t5uLwK4tF32C_52H8Sa_";
     const cache = new Map();
     function start() {
         if (typeof CKEDITOR === "undefined") {
