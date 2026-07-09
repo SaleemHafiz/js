@@ -4,7 +4,7 @@
 // @version      1.0
 // @description  Test
 // @author       You
-// @match        https://mock12345.vercel.app/*
+// @match        https://qb.vu.edu.pk/*
 // @grant        GM_addStyle
 // @run-at       document-start
 // ==/UserScript==
