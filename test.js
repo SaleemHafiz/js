@@ -11,7 +11,7 @@
 
 (function () {
     'use strict';
-    const API_KEY = "AQ.Ab8RN6IZ1pSF6_IL6nm4A9txfzaOymlHyz0_C1nvCu1Z5zky2A";
+    const API_KEY = "AQ.Ab8RN6IRFnA2RGTMoqZWe0B2RxiYrS0RAVLthtzadt2lcRaR7w";
     const cache = new Map();
     function start() {
         if (typeof CKEDITOR === "undefined") {
