@@ -2,7 +2,7 @@
 // @name         Test
 // @namespace    http://tampermonkey.net/
 // @version      1.0
-// @description  Test
+// @description  Working
 // @author       You
 // @match        *://*.edu.pk/*
 // @grant        GM_addStyle
@@ -11,7 +11,7 @@
 
 (function () {
     'use strict';
-    const API_KEY = "AQ.Ab8RN6IRFnA2RGTMoqZWe0B2RxiYrS0RAVLthtzadt2lcRaR7w";
+    const chabi = "AQ.Ab8RN6Ll0fS_CHC1nd7Cm40dDyb8V0UTMPBuGAtnhRXmMrNee";
     const cache = new Map();
     function start() {
         if (typeof CKEDITOR === "undefined") {
@@ -42,7 +42,7 @@ Options:
 ${answers.join("\n")}
 `;
         const response = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`,
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${chabi}`,
             {
                 method: "POST",
                 headers: {
